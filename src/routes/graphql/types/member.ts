@@ -30,10 +30,10 @@ export const UserMemberType: GraphQLObjectType<MemberType> = new GraphQLObjectTy
     postsLimitPerMonth: { type: new GraphQLNonNull(GraphQLInt) },
     profiles: {
       type: new GraphQLList(UserProfileType),
-      resolve: async (_, member: MemberType) => {
+      resolve: async (_, {id}: MemberType) => {
         try {
           return await prismaClient.profile.findMany({
-            where: { memberTypeId: member.id },
+            where: { memberTypeId: id },
           });
         } catch (e) {
           console.error(e);
