@@ -3,7 +3,6 @@ import {
   GraphQLFloat,
   GraphQLInt,
   GraphQLList,
-  GraphQLNonNull,
   GraphQLObjectType,
 } from 'graphql';
 import { UserProfileType } from './profile.js';
@@ -26,8 +25,8 @@ export const UserMemberType: GraphQLObjectType<MemberType> = new GraphQLObjectTy
   name: 'Member',
   fields: () => ({
     id: { type: MemberTypeId },
-    discount: { type: new GraphQLNonNull(GraphQLFloat) },
-    postsLimitPerMonth: { type: new GraphQLNonNull(GraphQLInt) },
+    discount: { type: GraphQLFloat },
+    postsLimitPerMonth: { type: (GraphQLInt) },
     profiles: {
       type: new GraphQLList(UserProfileType),
       resolve: async (_, {id}: MemberType) => {

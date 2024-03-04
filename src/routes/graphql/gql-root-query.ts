@@ -1,4 +1,4 @@
-import { GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import { GraphQLList, GraphQLObjectType } from 'graphql';
 import { UserType } from './types/user.js';
 import { UUIDType } from './types/uuid.js';
 import { prismaClient } from './prisma-client.js';
@@ -11,10 +11,9 @@ export const rootQuery = new GraphQLObjectType({
   name: 'Query',
 
   fields: {
-
     user: {
       type: UserType,
-      args: { id: { type: new GraphQLNonNull(UUIDType) } },
+      args: { id: { type: UUIDType } },
       resolve: async (_, { id }: User) => {
         try {
           return await prismaClient.user.findFirst({ where: { id } });
@@ -27,7 +26,7 @@ export const rootQuery = new GraphQLObjectType({
 
     users: {
       type: new GraphQLList(UserType),
-      resolve: async (_) => {
+      resolve: async () => {
         try {
           return await prismaClient.user.findMany();
         } catch (e) {
@@ -39,7 +38,7 @@ export const rootQuery = new GraphQLObjectType({
 
     post: {
       type: PostType,
-      args: { id: { type: new GraphQLNonNull(UUIDType) } },
+      args: { id: { type: UUIDType } },
       resolve: async (_, { id }: Post) => {
         try {
           return await prismaClient.post.findFirst({ where: { id } });
@@ -52,7 +51,7 @@ export const rootQuery = new GraphQLObjectType({
 
     posts: {
       type: new GraphQLList(PostType),
-      resolve: async (_) => {
+      resolve: async () => {
         try {
           return await prismaClient.post.findMany();
         } catch (e) {
@@ -64,7 +63,7 @@ export const rootQuery = new GraphQLObjectType({
 
     memberType: {
       type: UserMemberType,
-      args: { id: { type: new GraphQLNonNull(MemberTypeId) } },
+      args: { id: { type: MemberTypeId } },
       resolve: async (_, { id }: MemberType) => {
         try {
           return await prismaClient.memberType.findFirst({ where: { id } });
@@ -89,7 +88,7 @@ export const rootQuery = new GraphQLObjectType({
 
     profile: {
       type: UserProfileType,
-      args: { id: { type: new GraphQLNonNull(UUIDType) } },
+      args: { id: { type: UUIDType } },
       resolve: async (_, { id }: Profile) => {
         try {
           return await prismaClient.profile.findFirst({ where: { id } });
@@ -101,15 +100,15 @@ export const rootQuery = new GraphQLObjectType({
     },
 
     profiles: {
-        type: new GraphQLList(UserProfileType),
-        resolve: async () => {
-            try {
-                return await prismaClient.profile.findMany();
-            } catch (e) {
-                console.error(e);
-                return [];
-            }
+      type: new GraphQLList(UserProfileType),
+      resolve: async () => {
+        try {
+          return await prismaClient.profile.findMany();
+        } catch (e) {
+          console.error(e);
+          return [];
         }
-    }
+      },
+    },
   },
 });
