@@ -1,8 +1,9 @@
 import { GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { UserInputType, UserType } from './types/user.js';
 import { prismaClient } from './prisma-client.js';
-import { Profile, User } from '@prisma/client';
+import { Post, Profile, User } from '@prisma/client';
 import { UserProfileInputType, UserProfileType } from './types/profile.js';
+import { PostInputType, PostType } from './types/post.js';
 
 export const rootMutation = new GraphQLObjectType({
   name: 'Mutation',
@@ -41,5 +42,24 @@ export const rootMutation = new GraphQLObjectType({
         }
       },
     },
+
+    createPost: {
+        type: PostType,
+        args: { post: { type: new GraphQLNonNull(PostInputType) } },
+        resolve: async (_, { title, content, authorId }: Post) => {
+            try {
+                return await prismaClient.post.create({
+                    data: {
+                        title,
+                        content,
+                        authorId,
+                    },
+                });
+            } catch (e) {
+                console.error(e);
+                return null;
+            }
+        }
+    }
   },
 });
