@@ -11,6 +11,7 @@ export const rootQuery = new GraphQLObjectType({
   name: 'Query',
 
   fields: {
+
     user: {
       type: UserType,
       args: { id: { type: new GraphQLNonNull(UUIDType) } },
@@ -23,6 +24,7 @@ export const rootQuery = new GraphQLObjectType({
         }
       },
     },
+    
     users: {
       type: new GraphQLList(UserType),
       resolve: async (_) => {
