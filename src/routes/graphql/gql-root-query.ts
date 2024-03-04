@@ -2,8 +2,10 @@ import { GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { UserType } from './types/user.js';
 import { UUIDType } from './types/uuid.js';
 import { prismaClient } from './prisma-client.js';
-import { Post, User } from '@prisma/client';
+import { MemberType, Post, Profile, User } from '@prisma/client';
 import { PostType } from './types/post.js';
+import { UserMemberType } from './types/member.js';
+import { UserProfileType } from './types/profile.js';
 
 export const rootQuery = new GraphQLObjectType({
   name: 'Query',
@@ -38,6 +40,30 @@ export const rootQuery = new GraphQLObjectType({
       resolve: async (_, { id }: Post) => {
         try {
           return await prismaClient.post.findFirst({ where: { id } });
+        } catch (e) {
+          console.error(e);
+          return null;
+        }
+      },
+    },
+
+    memberType: {
+      type: UserMemberType,
+      resolve: async (_, { id }: MemberType) => {
+        try {
+          return await prismaClient.memberType.findFirst({ where: { id } });
+        } catch (e) {
+          console.error(e);
+          return null;
+        }
+      },
+    },
+
+    profile: {
+      type: UserProfileType,
+      resolve: async (_, { id }: Profile) => {
+        try {
+          return await prismaClient.profile.findFirst({ where: { id } });
         } catch (e) {
           console.error(e);
           return null;

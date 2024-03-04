@@ -12,7 +12,7 @@ import { prismaClient } from '../prisma-client.js';
 
 export const UserType: GraphQLObjectType<User> = new GraphQLObjectType({
   name: 'User',
-  fields: {
+  fields: () => ({
     id: { type: new GraphQLNonNull(UUIDType) },
     name: { type: new GraphQLNonNull(GraphQLString) },
     balance: { type: new GraphQLNonNull(GraphQLFloat) },
@@ -28,7 +28,7 @@ export const UserType: GraphQLObjectType<User> = new GraphQLObjectType({
             }
         }
     }
-  },
+  }),
 
 });
 

@@ -6,7 +6,7 @@ import { prismaClient } from '../prisma-client.js';
 
 export const PostType = new GraphQLObjectType({
     name: 'Post',
-    fields: {
+    fields: () => ({
         id: {type: new GraphQLNonNull(UUIDType)},
         title: {type: new GraphQLNonNull(GraphQLString)},
         content: {type: new GraphQLNonNull(GraphQLString)},
@@ -22,14 +22,14 @@ export const PostType = new GraphQLObjectType({
                 }
             }
         }
-    }
+    })
 })
 
 export const PostInputType = new GraphQLInputObjectType({
     name: 'CreatePostInput',
-    fields: {
+    fields: () => ({
         title: {type: new GraphQLNonNull(GraphQLString)},
         content: {type: new GraphQLNonNull(GraphQLString)},
         authorId: {type: new GraphQLNonNull(UUIDType)}
-    }
+    })
 })

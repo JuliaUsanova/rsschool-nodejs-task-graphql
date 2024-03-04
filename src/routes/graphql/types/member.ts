@@ -24,7 +24,7 @@ export const MemberTypeId = new GraphQLEnumType({
 
 export const UserMemberType: GraphQLObjectType<MemberType> = new GraphQLObjectType({
   name: 'Member',
-  fields: {
+  fields: () => ({
     id: { type: MemberTypeId },
     discount: { type: new GraphQLNonNull(GraphQLFloat) },
     postsLimitPerMonth: { type: new GraphQLNonNull(GraphQLInt) },
@@ -41,5 +41,5 @@ export const UserMemberType: GraphQLObjectType<MemberType> = new GraphQLObjectTy
         }
       },
     },
-  },
+  }),
 });

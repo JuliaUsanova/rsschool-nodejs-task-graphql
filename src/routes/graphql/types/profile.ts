@@ -13,7 +13,7 @@ import { MemberTypeId, UserMemberType } from './member.js';
 
 export const UserProfileType: GraphQLObjectType<Profile> = new GraphQLObjectType({
   name: 'Profile',
-  fields: {
+  fields: () => ({
     id: { type: new GraphQLNonNull(UUIDType) },
     isMale: { type: new GraphQLNonNull(GraphQLBoolean) },
     yearOfBirth: { type: new GraphQLNonNull(GraphQLInt) },
@@ -41,7 +41,7 @@ export const UserProfileType: GraphQLObjectType<Profile> = new GraphQLObjectType
         }
       },
     },
-  },
+  }),
 });
 
 export const UserProfileInputType: GraphQLInputObjectType = new GraphQLInputObjectType({

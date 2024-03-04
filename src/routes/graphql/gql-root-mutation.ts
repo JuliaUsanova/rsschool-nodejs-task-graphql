@@ -8,13 +8,14 @@ import { PostInputType, PostType } from './types/post.js';
 export const rootMutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
+
     createUser: {
       type: UserType,
-      args: { user: { type: new GraphQLNonNull(UserInputType) } },
-      resolve: async (_, user: User) => {
+      args: { dto: { type: new GraphQLNonNull(UserInputType) } },
+      resolve: async (_, { dto }: { dto: User} ) => {
         try {
           return await prismaClient.user.create({
-            data: { name: user.name, balance: user.balance },
+            data: dto,
           });
         } catch (e) {
           console.error(e);
@@ -25,16 +26,11 @@ export const rootMutation = new GraphQLObjectType({
 
     createProfile: {
       type: UserProfileType,
-      args: { profile: { type: new GraphQLNonNull(UserProfileInputType) } },
-      resolve: async (_, { isMale, yearOfBirth, userId, memberTypeId }: Profile) => {
+      args: { dto: { type: new GraphQLNonNull(UserProfileInputType) } },
+      resolve: async (_, { dto }: { dto: Profile }) => {
         try {
           return await prismaClient.profile.create({
-            data: {
-              isMale,
-              yearOfBirth,
-              userId,
-              memberTypeId,
-            },
+            data: dto,
           });
         } catch (e) {
           console.error(e);
@@ -44,22 +40,18 @@ export const rootMutation = new GraphQLObjectType({
     },
 
     createPost: {
-        type: PostType,
-        args: { post: { type: new GraphQLNonNull(PostInputType) } },
-        resolve: async (_, { title, content, authorId }: Post) => {
-            try {
-                return await prismaClient.post.create({
-                    data: {
-                        title,
-                        content,
-                        authorId,
-                    },
-                });
-            } catch (e) {
-                console.error(e);
-                return null;
-            }
+      type: PostType,
+      args: { dto: { type: new GraphQLNonNull(PostInputType) } },
+      resolve: async (_, { dto }: { dto: Post }) => {
+        try {
+          return await prismaClient.post.create({
+            data: dto,
+          });
+        } catch (e) {
+          console.error(e);
+          return null;
         }
-    }
+      },
+    },
   },
 });
