@@ -19,9 +19,9 @@ export const UserType: GraphQLObjectType<User> = new GraphQLObjectType({
 
     profile: {
         type: UserProfileType,
-        resolve: async (user: User) => {
+        resolve: async (_, {id}: User) => {
             try {
-                return await prismaClient.profile.findFirst({where: {userId: user.id}})
+                return await prismaClient.profile.findFirst({where: {userId: id}})
             } catch (e) {
                 console.error(e);
                 return null;

@@ -15,7 +15,7 @@ export const UserProfileType = new GraphQLObjectType({
     memberTypeId: { type: new GraphQLNonNull(UUIDType) },
     user: {
         type: UserType,
-        resolve: async (profile: Profile) => {
+        resolve: async (_, profile: Profile) => {
             try {
                 return await prismaClient.user.findFirst({where: {id: profile.userId}})
             } catch (e) {
@@ -26,7 +26,7 @@ export const UserProfileType = new GraphQLObjectType({
     },
     memberType: {
         type: UserMemberType,
-        resolve: async (profile: Profile) => {
+        resolve: async (_, profile: Profile) => {
             try {
                 return await prismaClient.memberType.findFirst({where: {id: profile.memberTypeId}})
             } catch (e) {
