@@ -53,3 +53,13 @@ export const UserProfileInputType: GraphQLInputObjectType = new GraphQLInputObje
     memberTypeId: { type: new GraphQLNonNull(MemberTypeId) },
   }),
 });
+
+export const UserProfileChangeInputType: GraphQLInputObjectType = new GraphQLInputObjectType({
+    name: 'ChangeProfileInput',
+    fields: () => ({
+      isMale: { type: new GraphQLNonNull(GraphQLBoolean) },
+      yearOfBirth: { type: new GraphQLNonNull(GraphQLInt) },
+      userId: { type: new GraphQLNonNull(UUIDType) },
+      memberTypeId: { type: new GraphQLNonNull(MemberTypeId) },
+    }),
+  });

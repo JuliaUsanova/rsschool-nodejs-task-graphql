@@ -1,9 +1,9 @@
 import { GraphQLNonNull, GraphQLObjectType } from 'graphql';
-import { UserInputType, UserType } from './types/user.js';
+import { UserChangeType, UserInputType, UserType } from './types/user.js';
 import { prismaClient } from './prisma-client.js';
 import { Post, Profile, User } from '@prisma/client';
-import { UserProfileInputType, UserProfileType } from './types/profile.js';
-import { PostInputType, PostType } from './types/post.js';
+import { UserProfileChangeInputType, UserProfileInputType, UserProfileType } from './types/profile.js';
+import { PostChangeInputType, PostInputType, PostType } from './types/post.js';
 import { UUIDType } from './types/uuid.js';
 import { Void } from './types/void.js';
 
@@ -23,6 +23,19 @@ export const rootMutation = new GraphQLObjectType({
           return null;
         }
       },
+    },
+
+    changeUser: {
+        type: UserType,
+        args: {id: {type: new GraphQLNonNull(UUIDType)}, dto: {type: new GraphQLNonNull(UserChangeType)}},
+        resolve: async (_, {id, dto}: {id: User['id'], dto: User}) => {
+            try {
+                return await prismaClient.user.update({where: {id}, data: dto});
+            } catch (e) {
+                console.error(e);
+                return null;
+            }
+        }
     },
 
     deleteUser: {
@@ -54,6 +67,19 @@ export const rootMutation = new GraphQLObjectType({
       },
     },
 
+    changeProfile: {
+        type: UserProfileType,
+        args: {id: {type: new GraphQLNonNull(UUIDType)}, dto: {type: new GraphQLNonNull(UserProfileChangeInputType)}},
+        resolve: async (_, {id, dto}: {id: Profile['id'], dto: Profile}) => {
+            try {
+                return await prismaClient.profile.update({where: {id}, data: dto});
+            } catch (e) {
+                console.error(e);
+                return null;
+            }
+        }
+    },
+
     deleteProfile: {
       type: Void,
       args: { id: { type: new GraphQLNonNull(UUIDType) } },
@@ -81,6 +107,19 @@ export const rootMutation = new GraphQLObjectType({
           return null;
         }
       },
+    },
+
+    changePost: {
+        type: PostType,
+        args: {id: {type: new GraphQLNonNull(UUIDType)}, dto: {type: new GraphQLNonNull(PostChangeInputType)}},
+        resolve: async (_, {id, dto}: {id: Post['id'], dto: Post}) => {
+            try {
+                return await prismaClient.post.update({where: {id}, data: dto});
+            } catch (e) {
+                console.error(e);
+                return null;
+            }
+        }
     },
 
     deletePost: {
